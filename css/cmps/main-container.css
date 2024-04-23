@@ -1,0 +1,38 @@
+.main-container {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    grid-template-rows: 1fr 2fr;
+
+    max-height: 95vh;
+    gap: 5px;
+    padding-top: 2vh;
+}
+
+.main-container .current-player {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgb(75, 82, 79);
+    text-align: center;
+}
+
+.main-container .current-player h1 {
+    color: rgb(0, 0, 0);
+    font-size: 2rem;
+}
+
+.main-container .game-container {
+    display: grid;
+    gap: 2px;
+}
+
+.main-container .radar {
+    transition: 0.5s;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+}
+
+.main-container .actions {
+    display: grid;
+}

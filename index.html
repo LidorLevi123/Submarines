@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/main.css">
+    <title>Submarines</title>
+</head>
+
+<body class="main-layout" onload="onInit()">
+    <main class="main-container">
+        <section class="current-player"></section>
+
+        <img class="radar" src="img/radar.gif" alt="">
+
+        <section class="game-container">
+            <table>
+                <tbody class="game-board"></tbody>
+            </table>
+        </section>
+
+        <section class="actions">
+            <button onclick="onMuteBG()">Mute Background Audio</button>
+            <button onclick="onMuteSE()">Mute Sound Effects</button>
+        </section>
+    </main>
+
+    <div class="backdrop"></div>
+    <div class="modal"></div>
+
+    <script src="js/services/util.service.js"></script>
+    <script src="js/services/submarine.service.js"></script>
+    <script src="js/submarine.controller.js"></script>
+</body>
+
+</html>

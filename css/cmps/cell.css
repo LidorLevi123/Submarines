@@ -1,0 +1,58 @@
+.cell {
+    position: relative;
+    width: 50px;
+    height: 50px;
+    color: white;
+
+    font-size: 1.8rem;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+
+    background-color: #ffffffde;
+    border: 1px solid black;
+    border-radius: 5px;
+    text-align: center;
+    cursor: pointer;
+    transition: 0.5s;
+}
+
+.cell::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    translate: -50% -50%;
+
+    background-color: red;
+    border: 1px solid red;
+    border-radius: 50%;
+    width: 40%;
+    height: 40%;
+    box-shadow: inset white 0 0 0 5px;
+    transition: opacity 0.3s;
+    opacity: 0;
+}
+
+.cell.hit::before {
+    opacity: 1;
+}
+
+.cell.miss {
+    background-color: #003b535f;
+    cursor: default;
+    box-shadow: inset white 0 0 4px 0;
+}
+
+.cell.hit {
+    cursor: default;
+}
+
+.cell.destroyed {
+    background: radial-gradient(circle, rgb(80, 24, 0), darkred);
+    box-shadow: inset 0 0 5px 1px black;
+}
+
+.cell.destroyed.flame {
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.3) 0%, rgba(255, 0, 0, 0.5) 60%, rgba(255, 0, 0, 0.8) 100%);
+    animation: flame 0.5s infinite alternate;
+    animation-iteration-count: 2;
+}
