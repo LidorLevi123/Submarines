@@ -18,9 +18,9 @@ var gTurnIntervalId
 const gGameStates = getGameStates()
 
 function onInit() {
-    setPlayers()
+    createPlayers()
     renderBoard()
-    // gAudioAmbience.play()
+    gAudioAmbience.play()
 }
 
 function renderBoard() {
@@ -43,7 +43,7 @@ function renderBoard() {
                 content += 'X'
             }
 
-            strHTML += `<td id="cell-${i}-${j}" class="${className}" onclick="onCellClicked(this, ${i}, ${j})">${content}</td>`
+            strHTML += `<td id="cell-${i}-${j}" class="${className}" onclick="onCellClicked(this)">${content}</td>`
         }
         strHTML += '</tr>'
     }
@@ -55,22 +55,23 @@ function renderBoard() {
     document.querySelector('.game-board').innerHTML = strHTML
 }
 
-function onCellClicked(elCell, i, j) {
+function onCellClicked(elCell) {
     clearInterval(gTurnIntervalId)
-
-    const coord = { i, j }
+    
+    const coord = getCellCoord(elCell)
     const elBoard = document.querySelector('.game-board')
 
     if (!isEmptyCell(coord)) return
 
     if (isHit(coord)) {
         setCellState(coord, gGameStates.HIT)
+        damageShip(coord)
+        markDestroyedCells(coord)
+        
         elCell.classList.add('hit')
-
         gAudioHit.currentTime = 0
         gAudioHit.play()
 
-        markDestroyedCells(coord)
         checkVictory()
     } else {
         setCellState(coord, gGameStates.MISS)
@@ -109,26 +110,15 @@ function showShipImg() {
 
 function markDestroyedCells(coord) {
     if (!isDestroyed(coord)) return
-    const currPlayer = getCurrPlayer()
-    const length = currPlayer.hitBoard.length
+    const ship = getEnemyShip(coord)
 
-    for (let i = coord.i - 1; i <= coord.i + 1; i++) {
-        if (i < 0 || i >= length) continue
-        for (let j = coord.j - 1; j <= coord.j + 1; j++) {
-            if (j < 0 || j >= length) continue
-
-            const coord = { i, j }
-            const elCell = getElCell(coord)
-
-            if (!isDestroyed(coord)) continue
-            if (elCell.classList.contains('destroyed')) continue
-
-            elCell.classList.add('destroyed')
-            castFlames(elCell)
-            markDestroyedCells(coord)
-        }
+    for (let i = 0; i < ship.coords.length; i++) {
+        const currCord = ship.coords[i]
+        const elCell = getElCell(currCord)
+        elCell.classList.add('destroyed')
+        castFlames(elCell)
     }
-
+    
     showShipImg()
     gAudioDestroy.currentTime = 0
     gAudioDestroy.play()
@@ -162,6 +152,14 @@ function checkVictory() {
 
 function getElCell(pos) {
     return document.getElementById(`cell-${pos.i}-${pos.j}`)
+}
+
+function getCellCoord(elCell) {
+    const idParts = elCell.id.split('-')
+    return {
+        i: +idParts[1],
+        j: +idParts[2]
+    }
 }
 
 function onMuteBG() {
